@@ -1,0 +1,8 @@
+#ifndef GENERAT0R_STATE_HPP
+#define GENERAT0R_STATE_HPP
+
+enum class GENERATOR_STATE {
+    NOT_STARTED, RUNNING, FINISHED
+};
+
+#endif

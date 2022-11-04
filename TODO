@@ -1,0 +1,5 @@
+Create base abstract class (called something like Generator)
+    - other classes will inherit from this
+        - i.e. WaveFunctionCollapse : public Generator
+    - virtual method named run() that will run the algorithm to completion.
+        - think about starting this from a thread, where the algorithm will write to a vector in the Display class containing the display information, and the Display class will read from it and display based on the vector
