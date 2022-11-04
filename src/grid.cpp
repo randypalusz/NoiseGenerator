@@ -4,7 +4,7 @@ Grid::Grid(unsigned int numPixelsX, unsigned int numPixelsY, float windowWidth) 
     m_numPixelsX = numPixelsX;
     m_numPixelsY = numPixelsY;
     // assuming square window here
-    m_pixelSize = windowWidth / (float) numPixelsX;
+    m_pixelSize = windowWidth / (float)numPixelsX;
     initialize();
 }
 
@@ -27,13 +27,19 @@ void Grid::initialize() {
         drawPosition.x = 0.0f;
         drawPosition.y += m_pixelSize;
     }
-    
 }
 
-void Grid::setPixelColor(int pixelIdx, sf::Color color) {
-    m_pixels.setColor(color, pixelIdx);
-}
+void Grid::setPixelColor(int pixelIdx, sf::Color color) { m_pixels.setColor(color, pixelIdx); }
 
-sf::Color Grid::getPixelColor(int pixelIdx) {
-    return m_pixels.getColor(pixelIdx);
+std::vector<unsigned int> Grid::getNeighborIndices(unsigned int idx) {
+    std::vector<unsigned int> toCheck{idx - 1, idx + 1, idx - m_numPixelsX, idx + m_numPixelsX};
+    std::vector<unsigned int> ret{};
+    std::copy_if(toCheck.begin(), toCheck.end(), std::back_inserter(ret),
+                 [&](auto val) { return m_pixels.isValidPixel(val); });
+    printf("Neighbors of %i: {", idx);
+    for (unsigned int i : ret) {
+        printf("%i, ", i);
+    }
+    printf("}\n");
+    return ret;
 }

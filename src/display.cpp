@@ -15,7 +15,6 @@ void Display::run() {
     // Generator* g;
     RandomGenerator g{};
 
-    // m_grid.setPixelColor(0, sf::Color::Green);
     while (m_window.isOpen()) {
         sf::Event event;
         while (m_window.pollEvent(event)) {
@@ -37,8 +36,7 @@ void Display::run() {
         clock.restart();
 
         i++;
-        if (i > 50) { i = 0; }
-
+        if (i > 50) i = 0;
 
         m_window.clear();
         m_window.draw(m_grid.getPixels().m_quad);
@@ -55,8 +53,7 @@ void Display::run() {
     for (int i = 0; i < 50; i++) {
         avgFrameRate += frameTimes[i];
     }
-    avgFrameRate = 100.0f/(avgFrameRate/50);
+    avgFrameRate = 1000.0f / (avgFrameRate / 50);
 
     printf("Avg frame rate: %f\n", avgFrameRate);
-
 }
