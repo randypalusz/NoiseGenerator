@@ -39,7 +39,7 @@ void Display::run() {
         if (i > 50) i = 0;
 
         m_window.clear();
-        m_window.draw(m_grid.getPixels().m_quad);
+        m_window.draw(m_grid.getVertexArray());
         m_window.display();
     }
 

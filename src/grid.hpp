@@ -4,52 +4,25 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-struct Pixel {
+struct PixelInfo {
     sf::Vector2f position[4];
     sf::Color color = sf::Color::White;
 
-    Pixel(sf::Vector2f position[4], sf::Color color) {
-        for (int i = 0; i < 4; i++) {
-            this->position[i] = position[i];
-        }
-        this->color = color;
-    }
+    PixelInfo(sf::Vector2f position[4], sf::Color color);
 };
 
-struct Pixels {
+class Pixels {
+   public:
+    void addPixel(PixelInfo p);
+    void setColor(sf::Color color, int idx);
+    const sf::Color getColor(int idx) { return m_pixelInfoVec.at(idx).color; }
+    bool isValidPixel(int idx) { return (idx >= 0) && (idx < (long)m_pixelInfoVec.size()); }
+    const sf::VertexArray& getVertexArray() { return m_quad; }
+    unsigned int getNumPixels() { return m_pixelInfoVec.size(); }
+
+   private:
     sf::VertexArray m_quad{sf::Quads};
-    std::vector<Pixel> m_pixels{};
-
-    void addPixel(Pixel p) {
-        m_pixels.push_back(p);
-
-        m_quad.append(p.position[0]);
-        m_quad.append(p.position[1]);
-        m_quad.append(p.position[2]);
-        m_quad.append(p.position[3]);
-
-        setColor(p.color, m_pixels.size() - 1);
-    }
-
-    void setColor(sf::Color color, int idx) {
-        int startIdx = idx * 4;
-        int endIdx = startIdx + 4;
-        for (int i = startIdx; i < endIdx; i++) {
-            m_quad[i].color = color;
-        }
-        // sync the color of the vertex array with the user-defined struct
-        m_pixels.at(idx).color = color;
-    }
-
-    const sf::Color getColor(int idx) { return m_pixels.at(idx).color; }
-
-    // returns whether the pixel is inside the bounds of the grid
-    bool isValidPixel(int idx) {
-        bool condition = (idx >= 0) && (idx < m_pixels.size());
-        std::string append = condition ? "is" : "is not";
-        printf("%i %s a valid pixel\n", idx, append.c_str());
-        return condition;
-    }
+    std::vector<PixelInfo> m_pixelInfoVec{};
 };
 
 class Grid {
@@ -59,10 +32,12 @@ class Grid {
     std::vector<unsigned int> getNeighborIndices(unsigned int idx);
     const sf::Color getPixelColor(int pixelIdx) { return m_pixels.getColor(pixelIdx); };
     const Pixels& getPixels() { return m_pixels; };
+    const sf::VertexArray& getVertexArray() { return m_pixels.getVertexArray(); }
+    unsigned int getNumPixels() { return m_pixels.getNumPixels(); }
 
    private:
     void initialize();
-    Pixels m_pixels;
+    Pixels m_pixels{};
     unsigned int m_numPixelsX;
     unsigned int m_numPixelsY;
     float m_pixelSize;
