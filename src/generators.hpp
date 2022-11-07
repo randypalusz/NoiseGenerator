@@ -4,27 +4,37 @@
 #include <atomic>
 
 #include "grid.hpp"
+#include "generator_state.hpp"
 
 class Generator {
    public:
-    virtual void run(Grid& grid) = 0;
+    void generate(Grid& grid, GENERATOR_STATE& state) {
+        state = GENERATOR_STATE::RUNNING;
+        this->run(grid);
+        state = GENERATOR_STATE::FINISHED;
+    }
     virtual void abort() { m_shouldStop = true; };
     virtual ~Generator(){};
 
    protected:
-    std::atomic<bool> m_shouldStop{false};
     Generator(){};
+    virtual void run(Grid& grid) = 0;
+    std::atomic<bool> m_shouldStop{false};
 };
 
 class RandomGenerator : public Generator {
    public:
     RandomGenerator(){};
+
+   protected:
     virtual void run(Grid& grid) override;
 };
 
 class SinglePassGenerator : public Generator {
    public:
     SinglePassGenerator(){};
+
+   protected:
     virtual void run(Grid& grid) override;
 };
 

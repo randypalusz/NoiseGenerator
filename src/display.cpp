@@ -10,7 +10,6 @@
 Display::~Display() {
     m_generator->abort();
     m_process.join();
-    m_threadState = GENERATOR_STATE::FINISHED;
     delete m_generator;
 }
 
@@ -30,8 +29,8 @@ void Display::run() {
         }
 
         if (m_threadState == GENERATOR_STATE::NOT_STARTED) {
-            m_process = std::thread(&Generator::run, m_generator, std::ref(m_grid));
-            m_threadState = GENERATOR_STATE::RUNNING;
+            m_process = std::thread(&Generator::generate, m_generator, std::ref(m_grid),
+                                    std::ref(m_threadState));
             printf("Thread started\n");
         }
 
