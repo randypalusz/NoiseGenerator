@@ -7,12 +7,19 @@
 
 #include "generators.hpp"
 
+Display::~Display() {
+    m_generator->abort();
+    m_process.join();
+    m_threadState = GENERATOR_STATE::FINISHED;
+    delete m_generator;
+}
+
 void Display::run() {
     sf::Clock clock{};
     sf::Int32 frameTimes[50] = {};
     int i = 0;
 
-    m_generator = new RandomGenerator();
+    m_generator = new SinglePassGenerator();
 
     while (m_window.isOpen()) {
         sf::Event event;
@@ -39,12 +46,6 @@ void Display::run() {
         m_window.draw(m_grid.getVertexArray());
         m_window.display();
     }
-
-    m_generator->abort();
-    while (m_process.joinable()) {
-        m_process.join();
-    }
-    m_threadState = GENERATOR_STATE::FINISHED;
 
     float avgFrameRate = 0.0f;
     for (int i = 0; i < 50; i++) {

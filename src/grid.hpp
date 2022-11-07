@@ -19,6 +19,7 @@ class Pixels {
     bool isValidPixel(int idx) { return (idx >= 0) && (idx < (long)m_pixelInfoVec.size()); }
     const sf::VertexArray& getVertexArray() { return m_quad; }
     unsigned int getNumPixels() { return m_pixelInfoVec.size(); }
+    const std::vector<PixelInfo>& getPixelInfo() { return m_pixelInfoVec; };
 
    private:
     sf::VertexArray m_quad{sf::Quads};
@@ -34,6 +35,7 @@ class Grid {
     const Pixels& getPixels() { return m_pixels; };
     const sf::VertexArray& getVertexArray() { return m_pixels.getVertexArray(); }
     unsigned int getNumPixels() { return m_pixels.getNumPixels(); }
+    const std::vector<PixelInfo>& getPixelInfo() { return m_pixels.getPixelInfo(); };
 
    private:
     void initialize();

@@ -22,4 +22,10 @@ class RandomGenerator : public Generator {
     virtual void run(Grid& grid) override;
 };
 
+class SinglePassGenerator : public Generator {
+   public:
+    SinglePassGenerator(){};
+    virtual void run(Grid& grid) override;
+};
+
 #endif
