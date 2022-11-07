@@ -13,12 +13,12 @@ Display::~Display() {
     delete m_generator;
 }
 
-void Display::run() {
+void Display::run(GENERATOR_TYPE genType) {
     sf::Clock clock{};
     sf::Int32 frameTimes[50] = {};
     int i = 0;
 
-    m_generator = new SinglePassGenerator();
+    m_generator = GeneratorBuilder::build(genType);
 
     while (m_window.isOpen()) {
         sf::Event event;

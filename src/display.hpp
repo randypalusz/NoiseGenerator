@@ -14,7 +14,7 @@ class Display {
     Display(float width, float height)
         : m_window(sf::VideoMode(width, height), "Title"), m_grid(100, 100, width){};
     ~Display();
-    void run();
+    void run(GENERATOR_TYPE genType);
 
    private:
     sf::RenderWindow m_window;

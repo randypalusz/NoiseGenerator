@@ -23,6 +23,7 @@ set(SOURCES
     src/generators.hpp
     src/random_generator.cpp
     src/single_pass_generator.cpp
+    src/generator_builder.cpp
 )
 
 add_executable(main ${SOURCES})
