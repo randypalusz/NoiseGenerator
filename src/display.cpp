@@ -12,8 +12,7 @@ void Display::run() {
     sf::Int32 frameTimes[50] = {};
     int i = 0;
 
-    // Generator* g;
-    RandomGenerator g{};
+    m_generator = new RandomGenerator();
 
     while (m_window.isOpen()) {
         sf::Event event;
@@ -24,9 +23,7 @@ void Display::run() {
         }
 
         if (m_threadState == GENERATOR_STATE::NOT_STARTED) {
-            // Initialize the generator and start the run thread
-            // g = new RandomGenerator();
-            m_process = std::thread(&RandomGenerator::run, &g, std::ref(m_grid));
+            m_process = std::thread(&Generator::run, m_generator, std::ref(m_grid));
             m_threadState = GENERATOR_STATE::RUNNING;
             printf("Thread started\n");
         }
@@ -43,7 +40,7 @@ void Display::run() {
         m_window.display();
     }
 
-    g.abort();
+    m_generator->abort();
     while (m_process.joinable()) {
         m_process.join();
     }
