@@ -1,5 +1,7 @@
 #include "grid.hpp"
 
+#include <algorithm>
+
 PixelInfo::PixelInfo(sf::Vector2f position[4], sf::Color color) {
     for (int i = 0; i < 4; i++) {
         this->position[i] = position[i];
@@ -28,11 +30,14 @@ void Pixels::setColor(sf::Color color, int idx) {
     m_pixelInfoVec.at(idx).color = color;
 }
 
-Grid::Grid(unsigned int numPixelsX, unsigned int numPixelsY, float windowWidth) {
-    m_numPixelsX = numPixelsX;
-    m_numPixelsY = numPixelsY;
-    // assuming square window here
-    m_pixelSize = windowWidth / (float)numPixelsX;
+Grid::Grid(unsigned int numPixelsX, float windowWidth, float windowHeight) {
+    unsigned int clampedNumPixelsX =
+        std::clamp(numPixelsX, (unsigned int)2, (unsigned int)windowWidth);
+    m_numPixelsX = clampedNumPixelsX;
+    m_numPixelsY = static_cast<unsigned int>((windowHeight / windowWidth) * clampedNumPixelsX);
+    m_pixelSizeX = windowWidth / (float)m_numPixelsX;
+    m_pixelSizeY = windowHeight / (float)m_numPixelsY;
+    printf("PixelsizeX, PixelsizeY: {%f, %f}\n", m_pixelSizeX, m_pixelSizeY);
     initialize();
 }
 
@@ -42,18 +47,19 @@ void Grid::initialize() {
     for (unsigned int i = 0; i < m_numPixelsY; i++) {
         for (unsigned int j = 0; j < m_numPixelsX; j++) {
             sf::Vector2f position[4];
-            position[0] = sf::Vector2f(drawPosition.x, drawPosition.y + m_pixelSize);
+            position[0] = sf::Vector2f(drawPosition.x, drawPosition.y + m_pixelSizeY);
             position[1] = sf::Vector2f(drawPosition.x, drawPosition.y);
-            position[2] = sf::Vector2f(drawPosition.x + m_pixelSize, drawPosition.y);
-            position[3] = sf::Vector2f(drawPosition.x + m_pixelSize, drawPosition.y + m_pixelSize);
+            position[2] = sf::Vector2f(drawPosition.x + m_pixelSizeX, drawPosition.y);
+            position[3] =
+                sf::Vector2f(drawPosition.x + m_pixelSizeX, drawPosition.y + m_pixelSizeY);
             PixelInfo p{position, sf::Color::White};
             p.color = whiteOrBlack ? sf::Color::White : sf::Color::Black;
             whiteOrBlack = !whiteOrBlack;
-            drawPosition.x += m_pixelSize;
+            drawPosition.x += m_pixelSizeX;
             m_pixels.addPixel(p);
         }
         drawPosition.x = 0.0f;
-        drawPosition.y += m_pixelSize;
+        drawPosition.y += m_pixelSizeY;
     }
 }
 
@@ -64,10 +70,5 @@ std::vector<unsigned int> Grid::getNeighborIndices(unsigned int idx) {
     std::vector<unsigned int> ret{};
     std::copy_if(toCheck.begin(), toCheck.end(), std::back_inserter(ret),
                  [&](auto val) { return m_pixels.isValidPixel(val); });
-    // printf("Neighbors of %i: {", idx);
-    // for (unsigned int i : ret) {
-    //     printf("%i, ", i);
-    // }
-    // printf("}\n");
     return ret;
 }

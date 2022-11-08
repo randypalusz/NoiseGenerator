@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <thread>
+#include <algorithm>
 
 #include "grid.hpp"
 #include "generators.hpp"
@@ -11,8 +12,8 @@
 
 class Display {
    public:
-    Display(float width, float height)
-        : m_window(sf::VideoMode(width, height), "Title"), m_grid(100, 100, width){};
+    Display(float width, float height, unsigned int numPixelsX)
+        : m_window{sf::VideoMode(width, height), "Title"}, m_grid{numPixelsX, width, height} {};
     ~Display();
     void run(GENERATOR_TYPE genType);
 

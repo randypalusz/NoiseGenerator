@@ -1,4 +1,4 @@
-#include "generators.hpp"
+#include "generator_builder.hpp"
 
 const std::unordered_map<GENERATOR_TYPE, std::function<Generator*()>> GeneratorBuilder::ctorMap{
     {GENERATOR_TYPE::RANDOM_GENERATOR, []() { return new RandomGenerator(); }},

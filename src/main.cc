@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "generators.hpp"
+#include "generator_builder.hpp"
 #include "display.hpp"
 
 int main(int argc, char** argv) {
@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
         input = std::string(argv[1]);
     }
     GENERATOR_TYPE genType = GeneratorBuilder::strToEnum(input);
-    Display d{600.0f, 600.0f};
+    Display d{1000.0f, 600.0f, 50};
     d.run(genType);
     return 0;
 }

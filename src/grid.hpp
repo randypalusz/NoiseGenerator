@@ -28,7 +28,7 @@ class Pixels {
 
 class Grid {
    public:
-    Grid(unsigned int numPixelsX, unsigned int numPixelsY, float windowWidth);
+    Grid(unsigned int numPixelsX, float windowWidth, float windowHeight);
     void setPixelColor(int pixelIdx, sf::Color color);
     std::vector<unsigned int> getNeighborIndices(unsigned int idx);
     const sf::Color getPixelColor(int pixelIdx) { return m_pixels.getColor(pixelIdx); };
@@ -42,7 +42,8 @@ class Grid {
     Pixels m_pixels{};
     unsigned int m_numPixelsX;
     unsigned int m_numPixelsY;
-    float m_pixelSize;
+    float m_pixelSizeX;
+    float m_pixelSizeY;
 };
 
 #endif

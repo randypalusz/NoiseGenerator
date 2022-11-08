@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "generators.hpp"
+#include "generator_builder.hpp"
 
 Display::~Display() {
     m_generator->abort();
