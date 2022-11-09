@@ -20,6 +20,12 @@ void Pixels::addPixel(PixelInfo p) {
     setColor(p.color, m_pixelInfoVec.size() - 1);
 }
 
+const sf::Vector2f Pixels::getCenterPixelPosition(unsigned int idx) {
+    int startIdx = idx * 4;
+    return sf::Vector2f((m_quad[startIdx + 2].position.x + m_quad[startIdx].position.x) / 2.0f,
+                        (m_quad[startIdx].position.y + m_quad[startIdx + 1].position.y) / 2.0f);
+}
+
 void Pixels::setColor(sf::Color color, int idx) {
     int startIdx = idx * 4;
     int endIdx = startIdx + 4;
@@ -31,6 +37,8 @@ void Pixels::setColor(sf::Color color, int idx) {
 }
 
 Grid::Grid(unsigned int numPixelsX, float windowWidth, float windowHeight) {
+    m_windowWidth = windowWidth;
+    m_windowHeight = windowHeight;
     unsigned int clampedNumPixelsX =
         std::clamp(numPixelsX, (unsigned int)2, (unsigned int)windowWidth);
     m_numPixelsX = clampedNumPixelsX;

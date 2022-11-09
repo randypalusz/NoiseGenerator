@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
         input = std::string(argv[1]);
     }
     GENERATOR_TYPE genType = GeneratorBuilder::strToEnum(input);
-    Display d{1000.0f, 600.0f, 50};
+    Display d{1000.0f, 600.0f, 600};
     d.run(genType);
     return 0;
 }

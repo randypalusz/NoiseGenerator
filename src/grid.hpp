@@ -14,6 +14,7 @@ struct PixelInfo {
 class Pixels {
    public:
     void addPixel(PixelInfo p);
+    const sf::Vector2f getCenterPixelPosition(unsigned int idx);
     void setColor(sf::Color color, int idx);
     inline const sf::Color getColor(int idx) { return m_pixelInfoVec.at(idx).color; }
     inline bool isValidPixel(int idx) {
@@ -41,6 +42,16 @@ class Grid {
     inline const PixelInfo& getPixelInfoAt(unsigned int idx) {
         return m_pixels.getPixelInfo().at(idx);
     };
+    inline const sf::Vector2u idxToCoords(unsigned int idx) {
+        return sf::Vector2u(idx % m_numPixelsX, static_cast<unsigned int>(idx / m_numPixelsX));
+    }
+    inline const sf::Vector2f getCenterPixelPosition(unsigned int idx) {
+        return m_pixels.getCenterPixelPosition(idx);
+    }
+    inline const sf::Vector2f getCenterPixelPositionWindowRelative(unsigned int idx) {
+        sf::Vector2f vec = m_pixels.getCenterPixelPosition(idx);
+        return sf::Vector2f{vec.x / m_windowWidth, vec.y / m_windowHeight};
+    }
 
    private:
     void initialize();
@@ -49,6 +60,8 @@ class Grid {
     unsigned int m_numPixelsY;
     float m_pixelSizeX;
     float m_pixelSizeY;
+    float m_windowWidth;
+    float m_windowHeight;
 };
 
 #endif

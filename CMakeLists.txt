@@ -23,8 +23,10 @@ set(SOURCES
     src/generators.hpp
     src/random_generator.cpp
     src/single_pass_generator.cpp
+    src/perlin_noise_generator.cpp
     src/generator_builder.cpp
     src/generator_builder.hpp
+    src/util.hpp
 )
 
 add_executable(main ${SOURCES})
