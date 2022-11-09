@@ -9,9 +9,8 @@ void SinglePassGenerator::run(Grid& grid) {
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distr(0, 1);
     auto pixelInfo = grid.getPixelInfo();
-    int i = 0;  // counter
+    int i = 0;
     while (!m_shouldStop) {
-        // do stuff
         for (auto it = pixelInfo.begin(); it != pixelInfo.end(); it++, i++) {
             if (m_shouldStop) {
                 break;

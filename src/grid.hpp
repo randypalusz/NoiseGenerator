@@ -15,11 +15,13 @@ class Pixels {
    public:
     void addPixel(PixelInfo p);
     void setColor(sf::Color color, int idx);
-    const sf::Color getColor(int idx) { return m_pixelInfoVec.at(idx).color; }
-    bool isValidPixel(int idx) { return (idx >= 0) && (idx < (long)m_pixelInfoVec.size()); }
-    const sf::VertexArray& getVertexArray() { return m_quad; }
-    unsigned int getNumPixels() { return m_pixelInfoVec.size(); }
-    const std::vector<PixelInfo>& getPixelInfo() { return m_pixelInfoVec; };
+    inline const sf::Color getColor(int idx) { return m_pixelInfoVec.at(idx).color; }
+    inline bool isValidPixel(int idx) {
+        return (idx >= 0) && (idx < static_cast<long>(m_pixelInfoVec.size()));
+    }
+    inline const sf::VertexArray& getVertexArray() { return m_quad; }
+    inline unsigned int getNumPixels() { return m_pixelInfoVec.size(); }
+    inline const std::vector<PixelInfo>& getPixelInfo() { return m_pixelInfoVec; };
 
    private:
     sf::VertexArray m_quad{sf::Quads};
@@ -30,12 +32,15 @@ class Grid {
    public:
     Grid(unsigned int numPixelsX, float windowWidth, float windowHeight);
     void setPixelColor(int pixelIdx, sf::Color color);
-    std::vector<unsigned int> getNeighborIndices(unsigned int idx);
-    const sf::Color getPixelColor(int pixelIdx) { return m_pixels.getColor(pixelIdx); };
-    const Pixels& getPixels() { return m_pixels; };
-    const sf::VertexArray& getVertexArray() { return m_pixels.getVertexArray(); }
-    unsigned int getNumPixels() { return m_pixels.getNumPixels(); }
-    const std::vector<PixelInfo>& getPixelInfo() { return m_pixels.getPixelInfo(); };
+    const std::vector<unsigned int> getNeighborIndices(unsigned int idx);
+    inline const sf::Color getPixelColor(int pixelIdx) { return m_pixels.getColor(pixelIdx); };
+    // function used for rendering
+    inline const sf::VertexArray& getVertexArray() { return m_pixels.getVertexArray(); }
+    inline unsigned int getNumPixels() { return m_pixels.getNumPixels(); }
+    inline const std::vector<PixelInfo>& getPixelInfo() { return m_pixels.getPixelInfo(); };
+    inline const PixelInfo& getPixelInfoAt(unsigned int idx) {
+        return m_pixels.getPixelInfo().at(idx);
+    };
 
    private:
     void initialize();

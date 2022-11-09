@@ -37,7 +37,7 @@ Grid::Grid(unsigned int numPixelsX, float windowWidth, float windowHeight) {
     m_numPixelsY = static_cast<unsigned int>((windowHeight / windowWidth) * clampedNumPixelsX);
     m_pixelSizeX = windowWidth / (float)m_numPixelsX;
     m_pixelSizeY = windowHeight / (float)m_numPixelsY;
-    printf("PixelsizeX, PixelsizeY: {%f, %f}\n", m_pixelSizeX, m_pixelSizeY);
+    printf("m_numPixelsX, m_numPixelsY: {%u, %u}\n", m_numPixelsX, m_numPixelsY);
     initialize();
 }
 
@@ -65,7 +65,7 @@ void Grid::initialize() {
 
 void Grid::setPixelColor(int pixelIdx, sf::Color color) { m_pixels.setColor(color, pixelIdx); }
 
-std::vector<unsigned int> Grid::getNeighborIndices(unsigned int idx) {
+const std::vector<unsigned int> Grid::getNeighborIndices(unsigned int idx) {
     std::vector<unsigned int> toCheck{idx - 1, idx + 1, idx - m_numPixelsX, idx + m_numPixelsX};
     std::vector<unsigned int> ret{};
     std::copy_if(toCheck.begin(), toCheck.end(), std::back_inserter(ret),
