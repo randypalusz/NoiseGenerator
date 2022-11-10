@@ -126,22 +126,25 @@ void PerlinNoiseGenerator::generatePermutationArray() {
         permutation[i] = (*it);
     }
 }
-
+// TODO: officially add octaves/frequency to this via this article:
+//       https://rtouti.github.io/graphics/perlin-noise-algorithm
 void PerlinNoiseGenerator::run(Grid& grid) {
     auto pixelInfo = grid.getPixelInfo();
-    int i = 0;
     while (!m_shouldStop) {
-        for (auto it = pixelInfo.begin(); it != pixelInfo.end(); it++, i++) {
-            if (m_shouldStop) {
-                break;
+        for (float frequency = 1.0f; frequency > 0.01f; frequency -= 0.01) {
+            int i = 0;
+            for (auto it = pixelInfo.begin(); it != pixelInfo.end(); it++, i++) {
+                if (m_shouldStop) {
+                    break;
+                }
+                auto next = std::chrono::system_clock::now() + std::chrono::nanoseconds(60);
+                sf::Vector2f coords = grid.getCenterPixelPosition(i);
+                double noiseResult = noise(coords.x * frequency, coords.y * frequency, 0);
+                sf::Uint8 usableResult = static_cast<sf::Uint8>(rangeConvert(noiseResult));
+                sf::Color newColor{usableResult, usableResult, usableResult, usableResult};
+                grid.setPixelColor(i, newColor);
+                std::this_thread::sleep_until(next);
             }
-            auto next = std::chrono::system_clock::now() + std::chrono::nanoseconds(100);
-            sf::Vector2f coords = grid.getCenterPixelPosition(i);
-            double noiseResult = noise(coords.x * 0.01, coords.y * 0.01, 0);
-            sf::Uint8 usableResult = static_cast<sf::Uint8>(rangeConvert(noiseResult));
-            sf::Color newColor{usableResult, usableResult, usableResult, usableResult};
-            grid.setPixelColor(i, newColor);
-            std::this_thread::sleep_until(next);
         }
         m_shouldStop = true;
     }
