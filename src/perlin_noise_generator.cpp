@@ -1,3 +1,4 @@
+
 #include "generators.hpp"
 #include "util.hpp"
 
@@ -11,14 +12,11 @@
 double PerlinNoiseGenerator::grad(unsigned int hash, double x, double y, double z) {
     // Take the hashed value and take the first 4 bits of it
     // (15 == 0b1111)
-
     unsigned h = hash & 15;
 
     // If the most significant bit (MSB) of the hash is 0
     // then set u = x.  Otherwise y.
-
     double u = h < 8 /* 0b1000 */ ? x : y;
-
     double v;
 
     if (h < 4 /* 0b0100 */)
@@ -36,7 +34,6 @@ double PerlinNoiseGenerator::grad(unsigned int hash, double x, double y, double 
 
     // Use the last 2 bits to decide if u and v are positive
     // or negative. Then return their addition.
-
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
@@ -87,15 +84,10 @@ double PerlinNoiseGenerator::noise(double x, double y, double z) {
     // based on the faded (u,v,w) values we made earlier.
 
     x1 = lerp(grad(aaa, xf, yf, zf), grad(baa, xf - 1, yf, zf), u);
-
     x2 = lerp(grad(aba, xf, yf - 1, zf), grad(bba, xf - 1, yf - 1, zf), u);
-
     y1 = lerp(x1, x2, v);
-
     x1 = lerp(grad(aab, xf, yf, zf - 1), grad(bab, xf - 1, yf, zf - 1), u);
-
     x2 = lerp(grad(abb, xf, yf - 1, zf - 1), grad(bbb, xf - 1, yf - 1, zf - 1), u);
-
     y2 = lerp(x1, x2, v);
 
     // printf("{x1, x2, y1, y2}: {%f, %f, %f, %f}\n", x1, x2, y1, y2);
@@ -126,6 +118,7 @@ void PerlinNoiseGenerator::generatePermutationArray() {
         permutation[i] = (*it);
     }
 }
+
 // TODO: officially add octaves/frequency to this via this article:
 //       https://rtouti.github.io/graphics/perlin-noise-algorithm
 void PerlinNoiseGenerator::run(Grid& grid) {
@@ -141,7 +134,7 @@ void PerlinNoiseGenerator::run(Grid& grid) {
                 sf::Vector2f coords = grid.getCenterPixelPosition(i);
                 double noiseResult = noise(coords.x * frequency, coords.y * frequency, 0);
                 sf::Uint8 usableResult = static_cast<sf::Uint8>(rangeConvert(noiseResult));
-                sf::Color newColor{usableResult, usableResult, usableResult, usableResult};
+                sf::Color newColor{usableResult, usableResult, usableResult, 255};
                 grid.setPixelColor(i, newColor);
                 std::this_thread::sleep_until(next);
             }

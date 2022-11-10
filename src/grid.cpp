@@ -37,6 +37,17 @@ void Pixels::setColor(sf::Color color, int idx) {
     m_pixelInfoVec.at(idx).color = color;
 }
 
+const std::vector<uint8_t> Pixels::getColorArray() {
+    std::vector<uint8_t> returnVec{};
+    for (PixelInfo& p : m_pixelInfoVec) {
+        returnVec.push_back(p.color.r);
+        returnVec.push_back(p.color.g);
+        returnVec.push_back(p.color.b);
+        returnVec.push_back(p.color.a);
+    }
+    return returnVec;
+}
+
 Grid::Grid(unsigned int numPixelsX, float windowWidth, float windowHeight) {
     m_windowWidth = windowWidth;
     m_windowHeight = windowHeight;
@@ -55,13 +66,12 @@ void Grid::initialize() {
     sf::Vector2f drawPosition{0.0f, 0.0f};
     for (unsigned int i = 0; i < m_numPixelsY; i++) {
         for (unsigned int j = 0; j < m_numPixelsX; j++) {
-            sf::Vector2f position[4];
-            position[0] = sf::Vector2f(drawPosition.x, drawPosition.y + m_pixelSizeY);
-            position[1] = sf::Vector2f(drawPosition.x, drawPosition.y);
-            position[2] = sf::Vector2f(drawPosition.x + m_pixelSizeX, drawPosition.y);
-            position[3] =
-                sf::Vector2f(drawPosition.x + m_pixelSizeX, drawPosition.y + m_pixelSizeY);
-            PixelInfo p{position, sf::Color::White};
+            sf::Vector2f pos[4];
+            pos[0] = sf::Vector2f(drawPosition.x, drawPosition.y + m_pixelSizeY);
+            pos[1] = sf::Vector2f(drawPosition.x, drawPosition.y);
+            pos[2] = sf::Vector2f(drawPosition.x + m_pixelSizeX, drawPosition.y);
+            pos[3] = sf::Vector2f(drawPosition.x + m_pixelSizeX, drawPosition.y + m_pixelSizeY);
+            PixelInfo p{pos, sf::Color::White};
             p.color = whiteOrBlack ? sf::Color::White : sf::Color::Black;
             whiteOrBlack = !whiteOrBlack;
             drawPosition.x += m_pixelSizeX;

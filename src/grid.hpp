@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <filesystem>
 
 struct PixelInfo {
     sf::Vector2f position[4];
@@ -21,8 +22,9 @@ class Pixels {
         return (idx >= 0) && (idx < static_cast<long>(m_pixelInfoVec.size()));
     }
     inline const sf::VertexArray& getVertexArray() { return m_quad; }
-    inline unsigned int getNumPixels() { return m_pixelInfoVec.size(); }
+    inline unsigned int getNumPixels() const { return m_pixelInfoVec.size(); }
     inline const std::vector<PixelInfo>& getPixelInfo() { return m_pixelInfoVec; };
+    const std::vector<uint8_t> getColorArray();
 
    private:
     sf::VertexArray m_quad{sf::Quads};
@@ -37,7 +39,9 @@ class Grid {
     inline const sf::Color getPixelColor(int pixelIdx) { return m_pixels.getColor(pixelIdx); };
     // function used for rendering
     inline const sf::VertexArray& getVertexArray() { return m_pixels.getVertexArray(); }
-    inline unsigned int getNumPixels() { return m_pixels.getNumPixels(); }
+    inline unsigned int getNumPixels() const { return m_pixels.getNumPixels(); }
+    inline unsigned int getNumPixelsX() { return m_numPixelsX; }
+    inline unsigned int getNumPixelsY() { return m_numPixelsY; }
     inline const std::vector<PixelInfo>& getPixelInfo() { return m_pixels.getPixelInfo(); };
     inline const PixelInfo& getPixelInfoAt(unsigned int idx) {
         return m_pixels.getPixelInfo().at(idx);
@@ -51,6 +55,14 @@ class Grid {
     inline const sf::Vector2f getCenterPixelPositionWindowRelative(unsigned int idx) {
         sf::Vector2f vec = m_pixels.getCenterPixelPosition(idx);
         return sf::Vector2f{vec.x / m_windowWidth, vec.y / m_windowHeight};
+    }
+    inline const std::vector<uint8_t> getColorArray() { return m_pixels.getColorArray(); }
+    void writeToImage(const std::string& fileName) {
+        // create the directory if doesn't exist
+        std::filesystem::create_directory("out");
+        sf::Image image;
+        image.create(m_numPixelsX, m_numPixelsY, m_pixels.getColorArray().data());
+        image.saveToFile("out/" + fileName + ".png");
     }
 
    private:
