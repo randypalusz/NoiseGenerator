@@ -22,6 +22,7 @@ void Pixels::addPixel(PixelInfo p) {
 
 const sf::Vector2f Pixels::getCenterPixelPosition(unsigned int idx) {
     int startIdx = idx * 4;
+    // TODO: consider caching this to improve performance
     return sf::Vector2f((m_quad[startIdx + 2].position.x + m_quad[startIdx].position.x) / 2.0f,
                         (m_quad[startIdx].position.y + m_quad[startIdx + 1].position.y) / 2.0f);
 }

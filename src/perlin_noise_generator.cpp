@@ -135,17 +135,13 @@ void PerlinNoiseGenerator::run(Grid& grid) {
             if (m_shouldStop) {
                 break;
             }
-            // Incorrect: need to use the pixel coords relative to the window position,
-            //            not relative to the pixel itself, otherwise the algorithm will
-            //            output the same number each time
-            // sf::Vector2u coords = grid.idxToCoords(i);
-            sf::Vector2f coords = grid.getCenterPixelPositionWindowRelative(i);
-            // TODO: Multiplying this by a constant for now to make the output image more intricate
-            coords.x *= 32;
-            coords.y *= 32;
-            double noise_result = noise(coords.x, coords.y, 0);
-            sf::Color newColor{255, 255, 255, static_cast<sf::Uint8>(rangeConvert(noise_result))};
+            auto next = std::chrono::system_clock::now() + std::chrono::nanoseconds(100);
+            sf::Vector2f coords = grid.getCenterPixelPosition(i);
+            double noiseResult = noise(coords.x * 0.01, coords.y * 0.01, 0);
+            sf::Uint8 usableResult = static_cast<sf::Uint8>(rangeConvert(noiseResult));
+            sf::Color newColor{usableResult, usableResult, usableResult, usableResult};
             grid.setPixelColor(i, newColor);
+            std::this_thread::sleep_until(next);
         }
         m_shouldStop = true;
     }

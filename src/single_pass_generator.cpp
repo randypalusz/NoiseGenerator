@@ -15,7 +15,7 @@ void SinglePassGenerator::run(Grid& grid) {
             if (m_shouldStop) {
                 break;
             }
-            auto next = std::chrono::system_clock::now() + std::chrono::microseconds(10);
+            auto next = std::chrono::system_clock::now() + std::chrono::microseconds(5);
             sf::Color newColor = (distr(gen) == 0) ? sf::Color::Black : sf::Color::White;
             grid.setPixelColor(i, newColor);
             std::this_thread::sleep_until(next);
