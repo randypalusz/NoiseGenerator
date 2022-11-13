@@ -1,8 +1,3 @@
-Create base abstract class (called something like Generator)
-    - other classes will inherit from this
-        - i.e. WaveFunctionCollapse : public Generator
-    - virtual method named run() that will run the algorithm to completion.
-        - think about starting this from a thread, where the algorithm will write to a vector in the Display class containing the display information, and the Display class will read from it and display based on the vector
-
+- Make the frametime calculator into a separate class
 
 Reference this for github setup: https://stackoverflow.com/questions/68775869/message-support-for-password-authentication-was-removed-please-use-a-personal

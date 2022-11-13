@@ -1,7 +1,9 @@
 #include "generator_builder.hpp"
 
+#define gen_lambda(x) []() { return new x(); }
+
 const std::unordered_map<GENERATOR_TYPE, std::function<Generator*()>> GeneratorBuilder::ctorMap{
-    {GENERATOR_TYPE::RANDOM_GENERATOR, []() { return new RandomGenerator(); }},
+    {GENERATOR_TYPE::RANDOM_GENERATOR, gen_lambda(RandomGenerator)},
     {GENERATOR_TYPE::SINGLE_PASS_GENERATOR, []() { return new SinglePassGenerator(); }},
     {GENERATOR_TYPE::PERLIN_NOISE_GENERATOR, []() { return new PerlinNoiseGenerator(); }}};
 
