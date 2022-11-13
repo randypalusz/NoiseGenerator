@@ -16,7 +16,7 @@ Display::~Display() {
 
 void Display::run(GENERATOR_TYPE genType) {
     sf::Clock clock{};
-    sf::Int32 frameTimes[50] = {};
+    sf::Int32 frameTimes[50]{};
     int i = 0;
 
     m_generator = GeneratorBuilder::build(genType);
@@ -40,7 +40,7 @@ void Display::run(GENERATOR_TYPE genType) {
         clock.restart();
 
         i++;
-        if (i > 50) i = 0;
+        if (i >= 50) i = 0;
 
         m_window.clear();
         m_window.draw(m_grid.getVertexArray());
