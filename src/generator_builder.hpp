@@ -3,7 +3,8 @@
 
 #include "generators.hpp"
 
-// TODO: put this in its own hpp file
+// TODO: have the build method take in a pointer to the generator itself so that
+// this class can manage the memory allocated for the generator
 class GeneratorBuilder {
    public:
     static Generator* build(GENERATOR_TYPE genType) {

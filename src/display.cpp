@@ -7,6 +7,7 @@
 
 #include "generators.hpp"
 #include "generator_builder.hpp"
+#include "frametime.hpp"
 
 Display::~Display() {
     m_generator->abort();
@@ -15,9 +16,7 @@ Display::~Display() {
 }
 
 void Display::run(GENERATOR_TYPE genType) {
-    sf::Clock clock{};
-    sf::Int32 frameTimes[50]{};
-    int i = 0;
+    Frametime ft{};
 
     m_generator = GeneratorBuilder::build(genType);
 
@@ -35,23 +34,14 @@ void Display::run(GENERATOR_TYPE genType) {
             printf("Thread started\n");
         }
 
-        sf::Int32 frameTime{clock.getElapsedTime().asMilliseconds()};
-        frameTimes[i] = frameTime;
-        clock.restart();
-
-        i++;
-        if (i >= 50) i = 0;
+        ft.tick();
 
         m_window.clear();
         m_window.draw(m_grid.getVertexArray());
         m_window.display();
     }
 
-    float avgFrameRate = 0.0f;
-    for (int i = 0; i < 50; i++) {
-        avgFrameRate += frameTimes[i];
-    }
-    avgFrameRate = 1000.0f / (avgFrameRate / 50);
+    float avgFrameRate = ft.getFramerate();
 
     printf("Avg frame rate: %f\n", avgFrameRate);
 }

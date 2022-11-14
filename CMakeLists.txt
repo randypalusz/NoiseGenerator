@@ -27,6 +27,8 @@ set(SOURCES
     src/generator_builder.cpp
     src/generator_builder.hpp
     src/util.hpp
+    src/frametime.cpp
+    src/frametime.hpp
 )
 
 add_executable(main ${SOURCES})

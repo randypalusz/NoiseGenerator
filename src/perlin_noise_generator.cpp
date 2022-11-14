@@ -124,7 +124,7 @@ void PerlinNoiseGenerator::generatePermutationArray() {
 void PerlinNoiseGenerator::run(Grid& grid) {
     auto pixelInfo = grid.getPixelInfo();
     while (!m_shouldStop) {
-        for (float frequency = 1.0f; frequency > 0.01f; frequency -= 0.01) {
+        for (float frequency = 1.01f; frequency >= 0.01f; frequency -= 0.05) {
             int i = 0;
             for (auto it = pixelInfo.begin(); it != pixelInfo.end(); it++, i++) {
                 if (m_shouldStop) {
