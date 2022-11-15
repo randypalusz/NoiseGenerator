@@ -20,7 +20,7 @@ class Display {
    private:
     sf::RenderWindow m_window;
     Grid m_grid;
-    Generator* m_generator;
+    Generator* m_generator = nullptr;
     std::thread m_process;
     GENERATOR_STATE m_threadState = GENERATOR_STATE::NOT_STARTED;
 };

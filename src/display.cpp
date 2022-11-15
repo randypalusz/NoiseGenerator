@@ -18,7 +18,7 @@ Display::~Display() {
 void Display::run(GENERATOR_TYPE genType) {
     Frametime ft{};
 
-    m_generator = GeneratorBuilder::build(genType);
+    m_generator = GeneratorBuilder::build(genType, m_generator);
 
     while (m_window.isOpen()) {
         sf::Event event;
